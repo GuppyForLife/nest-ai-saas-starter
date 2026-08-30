@@ -19,7 +19,7 @@ The repository contains independently runnable frontend and backend applications
 
 ```text
 apps/
-├── webs/                         Vue 3 client (Vite)
+├── web/                         Vue 3 client (Vite)
 │   └── src/
 │       ├── App.vue               Application shell
 │       └── components/           UI components
@@ -91,7 +91,7 @@ pnpm start:dev
 
 ```bash
 # Web client (in a second terminal)
-cd apps/webs
+cd apps/web
 pnpm install
 pnpm dev
 ```
