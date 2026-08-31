@@ -1,6 +1,7 @@
 // @vitest-environment jsdom
 
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { AxiosHeaders, type InternalAxiosRequestConfig } from "axios";
 
 import { apiClient } from "./http-client";
 
@@ -27,15 +28,15 @@ describe("apiClient", () => {
       .mockReturnValue("test-jwt-token");
 
     const requestInterceptor =
-      apiClient.interceptors.request.handlers[0]?.fulfilled;
+      apiClient.interceptors.request.handlers?.[0]?.fulfilled;
     const config = {
-      headers: {},
-    };
+      headers: new AxiosHeaders(),
+    } as InternalAxiosRequestConfig;
 
     const result = await requestInterceptor?.(config);
 
     expect(getItemSpy).toHaveBeenCalledWith("token");
-    expect(result.headers.Authorization).toBe("Bearer test-jwt-token");
+    expect(result?.headers.Authorization).toBe("Bearer test-jwt-token");
   });
 
   it("should handle 401 Unauthorized response by clearing localStorage token and redirecting", async () => {
@@ -44,7 +45,7 @@ describe("apiClient", () => {
       .mockImplementation(() => {});
 
     const responseInterceptor =
-      apiClient.interceptors.response.handlers[0]?.rejected;
+      apiClient.interceptors.response.handlers?.[0]?.rejected;
     const error = {
       response: {
         status: 401,
